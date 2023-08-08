@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+
+kernel = np.ones((5, 5), np.uint8)
+print(kernel)
+
+# Use double backslashes or a raw string for the file path
+path = r"C:\Users\Yukesh\Downloads\1358200.jpg"
+
+img = cv2.imread(path)
+
+if img is None:
+    print("Error: Image not loaded.")
+else:
+    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Create a named window with the WINDOW_NORMAL flag
+    cv2.namedWindow("GrayScale", cv2.WINDOW_NORMAL)
+
+    # Display the grayscale image
+    cv2.imshow("GrayScale", imgGray)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
