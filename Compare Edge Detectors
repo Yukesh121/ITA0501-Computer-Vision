@@ -1,0 +1,44 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load an example image
+image_path = r"C:\Users\Yukesh\Desktop\Computer Vision\Monument.jpg"
+image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+# List of edge detection algorithms to compare
+edge_detectors = [
+    ('Canny', cv2.Canny),
+    ('Sobel X', cv2.Sobel),
+    ('Scharr X', cv2.Scharr),
+    ('Laplacian', cv2.Laplacian),
+]
+
+plt.figure(figsize=(12, 8))
+plt.subplot(2, 3, 1)
+plt.imshow(image, cmap='gray')
+plt.title('Original Image')
+
+# Iterate over the edge detectors
+for idx, (name, edge_detector) in enumerate(edge_detectors):
+    if name == 'Canny':
+        edges = edge_detector(image, 50, 150)
+    elif name == 'Scharr X':
+        edges = edge_detector(image, cv2.CV_64F, 1, 0)
+        edges = np.abs(edges)
+        edges = np.uint8(edges)
+    elif name == 'Laplacian':
+        edges = edge_detector(image, cv2.CV_64F)
+        edges = np.abs(edges)
+        edges = np.uint8(edges)
+    else:
+        edges = edge_detector(image, cv2.CV_64F, 1, 0, ksize=3)
+        edges = np.abs(edges)
+        edges = np.uint8(edges)
+
+    plt.subplot(2, 3, idx + 2)
+    plt.imshow(edges, cmap='gray')
+    plt.title(name)
+
+plt.tight_layout()
+plt.show()
