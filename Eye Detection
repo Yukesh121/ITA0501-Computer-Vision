@@ -1,0 +1,28 @@
+import cv2
+
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
+
+image_path =r"C:\Users\Yukesh\Documents\Computer Vision\Children.jpg"
+image = cv2.imread(image_path)
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+window_size = (800, 600)
+
+scale_factor = min(window_size[0] / image.shape[1], window_size[1] / image.shape[0])
+
+resized_image = cv2.resize(image, None, fx=scale_factor, fy=scale_factor)
+
+faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+for (x, y, w, h) in faces:
+    roi_gray = gray_image[y:y + h, x:x + w]
+    eyes = eye_cascade.detectMultiScale(roi_gray)
+
+    for (ex, ey, ew, eh) in eyes:
+        cv2.rectangle(resized_image, (int((x + ex) * scale_factor), int((y + ey) * scale_factor)),
+                      (int((x + ex + ew) * scale_factor), int((y + ey + eh) * scale_factor)), (0, 0, 255), 2)
+
+cv2.imshow('Eye Detection', resized_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
