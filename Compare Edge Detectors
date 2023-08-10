@@ -2,11 +2,9 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Load an example image
 image_path = r"C:\Users\Yukesh\Desktop\Computer Vision\Monument.jpg"
 image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
-# List of edge detection algorithms to compare
 edge_detectors = [
     ('Canny', cv2.Canny),
     ('Sobel X', cv2.Sobel),
@@ -19,7 +17,6 @@ plt.subplot(2, 3, 1)
 plt.imshow(image, cmap='gray')
 plt.title('Original Image')
 
-# Iterate over the edge detectors
 for idx, (name, edge_detector) in enumerate(edge_detectors):
     if name == 'Canny':
         edges = edge_detector(image, 50, 150)
