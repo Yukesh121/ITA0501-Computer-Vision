@@ -1,0 +1,25 @@
+import cv2
+
+cap = cv2.VideoCapture(r"C:\Users\Yukesh\Documents\Computer Vision\Car1.mp4")
+
+frame_width = int(cap.get(3))
+frame_height = int(cap.get(4))
+fps = int(cap.get(5))
+
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('reversed_video.avi', fourcc, fps, (frame_width, frame_height))
+
+frames = []
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    frames.append(frame)
+
+for frame in reversed(frames):
+    out.write(frame)
+
+out.release()
+cap.release()
+
+cv2.destroyAllWindows()
