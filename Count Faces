@@ -1,0 +1,29 @@
+import cv2
+
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+image = cv2.imread(r"C:\Users\Yukesh\Documents\Computer Vision\People 1.jpg")
+
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+
+num_faces = len(faces)
+print("Number of faces detected:", num_faces)
+
+for (x, y, w, h) in faces:
+    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+cv2.namedWindow('Detected Faces', cv2.WINDOW_NORMAL)
+
+display_width, display_height = 800, 600  
+scale_x = display_width / image.shape[1]
+scale_y = display_height / image.shape[0]
+scale = min(scale_x, scale_y)
+
+fitted_image = cv2.resize(image, None, fx=scale, fy=scale)
+
+cv2.imshow('Detected Faces', fitted_image)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
